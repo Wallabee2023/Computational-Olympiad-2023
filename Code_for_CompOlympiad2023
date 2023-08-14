@@ -1,0 +1,1779 @@
+TASK 1 
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# semi-major and orbital period values for each planet taken off the BPhO theory document
+
+a = [0.387, 0.723, 1, 1.523, 5.202, 9.576, 19.293, 30.246, 39.509]
+T = [0.241, 0.615, 1, 1.881, 11.861, 29.628, 84.747, 166.344, 248.348]
+
+
+
+# plotting a^1.5 and T
+
+plt.plot(np.power(a, 1.5), T, marker="o", markersize=2, markeredgecolor="blue", markerfacecolor="blue")
+plt.xlabel("(a / AU)^(3/2)")
+plt.ylabel("T / Yr")
+plt.title("Kepler's Third Law Verifcation")
+plt.axis('scaled')
+plt.xlim([0, 300])
+plt.ylim([0, 300])
+plt.show()
+
+
+(scroll down for next tasks)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 2 
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# creating an array of angles with increment 0.001rad, from 0-2π
+angles = np.arange(0, 2 * math.pi + 0.001, 0.001)
+
+
+
+# planet parameters
+major_mercury = 0.387
+ecc_mercury = 0.21
+
+major_venus = 0.723
+ecc_venus = 0.01
+
+major_earth = 1
+ecc_earth = 0.02
+
+major_mars = 1.523
+ecc_mars = 0.09
+
+major_jupiter = 5.202
+ecc_jupiter = 0.05
+
+major_saturn = 9.576
+ecc_saturn = 0.06
+
+major_uranus = 19.293
+ecc_uranus = 0.05
+
+major_neptune = 30.246
+ecc_neptune = 0.01
+
+major_pluto = 39.509
+ecc_pluto = 0.25
+
+
+
+# using Kepler's laws to calculate each planet's distance from (0,0) at each angle increment
+r_mercury = np.divide(major_mercury*(1 - ecc_mercury**2), 1 - np.multiply(ecc_mercury, np.cos(angles)))
+r_venus = np.divide(major_venus*(1 - ecc_venus**2), 1 - np.multiply(ecc_venus, np.cos(angles)))
+r_earth = np.divide(major_earth*(1 - ecc_earth**2), 1 - np.multiply(ecc_earth, np.cos(angles)))
+r_mars = np.divide(major_mars*(1 - ecc_mars**2), 1 - np.multiply(ecc_mars, np.cos(angles)))
+r_jupiter = np.divide(major_jupiter*(1 - ecc_jupiter**2), 1 - np.multiply(ecc_jupiter, np.cos(angles)))
+r_saturn = np.divide(major_saturn*(1 - ecc_saturn**2), 1 - np.multiply(ecc_saturn, np.cos(angles)))
+r_uranus = np.divide(major_uranus*(1 - ecc_uranus**2), 1 - np.multiply(ecc_uranus, np.cos(angles)))
+r_neptune = np.divide(major_neptune*(1 - ecc_neptune**2), 1 - np.multiply(ecc_neptune, np.cos(angles)))
+r_pluto = np.divide(major_pluto*(1 - ecc_pluto**2), 1 - np.multiply(ecc_pluto, np.cos(angles)))
+
+
+
+# using trigonometry to calculate x and y co-ordinates to plot
+x_mercury = np.multiply(r_mercury, np.cos(angles))
+x_venus = np.multiply(r_venus, np.cos(angles))
+x_earth = np.multiply(r_earth, np.cos(angles))
+x_mars = np.multiply(r_mars, np.cos(angles))
+x_jupiter = np.multiply(r_jupiter, np.cos(angles))
+x_saturn = np.multiply(r_saturn, np.cos(angles))
+x_uranus = np.multiply(r_uranus, np.cos(angles))
+x_neptune = np.multiply(r_neptune, np.cos(angles))
+x_pluto = np.multiply(r_pluto, np.cos(angles))
+
+y_mercury = np.multiply(r_mercury, np.sin(angles))
+y_venus = np.multiply(r_venus, np.sin(angles))
+y_earth = np.multiply(r_earth, np.sin(angles))
+y_mars = np.multiply(r_mars, np.sin(angles))
+y_jupiter = np.multiply(r_jupiter, np.sin(angles))
+y_saturn = np.multiply(r_saturn, np.sin(angles))
+y_uranus = np.multiply(r_uranus, np.sin(angles))
+y_neptune = np.multiply(r_neptune, np.sin(angles))
+y_pluto = np.multiply(r_pluto, np.sin(angles))
+
+
+
+
+
+
+# plotting the data
+plt.plot(x_mercury, y_mercury, color='magenta', label="mercury")
+plt.plot(x_venus, y_venus, color='purple', label="venus")
+plt.plot(x_earth, y_earth, color='cyan', label="earth")
+plt.plot(x_mars, y_mars, color='red', label="mars")
+plt.plot(x_jupiter, y_jupiter, color='orange', label="jupiter")
+plt.plot(x_saturn, y_saturn, color='brown', label="saturn")
+plt.plot(x_uranus, y_uranus, color='green', label="uranus")
+plt.plot(x_neptune, y_neptune, color='blue', label="neptune")
+plt.plot(x_pluto, y_pluto, color='grey', label="pluto")
+plt.plot(0, 0, marker="o", markersize=4, markeredgecolor="orange", markerfacecolor="yellow", label="sun")
+
+
+
+
+plt.xlabel("x Position/AU")
+plt.ylabel("y Position/AU")
+plt.legend(loc='upper left')
+plt.title("Orbital Positions of the Planets in our Solar System")
+plt.axis('scaled')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 3 - 2D OUTER PLANETS
+
+import sys
+#2danim
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+M = [5.683e26, 8.66e25, 1.988e30, 1.027e26, 1.309e22,] # Masses of the planets
+x = [1.357e12, 2.732e12, 0, 4.471e12, 4.434e12,]        # Initial x positions of the planets
+y = [0, 0, 0, 0, 0]                                                                     # Initial y positions of the planets
+z = [1.303e11, 3.083e11, 0, 5.007e11, 1.928e12,]        # Initial z positions of the planets
+v_x = [0, 0, 0, 0, 0]                                                                   # Initial x velocities of the planets
+v_y = [1.014e4, 7.13e3, -10, 5.47e3, 6.1e3,]                # Initial y velocities of the planets
+v_z = [0, 0, 0, 0, 0]                                                                   # Initial z velocities of the planets
+h = 9999999                                                                                           # Time step
+t = 0                                                                                                  # Initial time
+G = 6.6743e-11                                                                                         
+xlist = [[], [], [], [], []]                                                       # Lists to store x positions for animation
+ylist = [[], [], [], [], []]                                                       # Lists to store y positions for animation
+zlist = [[], [], [], [], []]                                                     # Lists to store z positions for animation
+
+
+figure = plt.figure()
+ax = figure.add_subplot()
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def animation_function(a):
+    global t
+    ax.clear()
+    ax.axis('equal')
+    t += h
+    for i in range(len(x)):
+        j1x = h * f_x(i, x[i], y[i], z[i])
+        k1x = h * v_x[i]
+        j1y = h * f_y(i, x[i], y[i], z[i])
+        k1y = h * v_y[i]
+        j1z = h * f_z(i, x[i], y[i], z[i])
+        k1z = h * v_z[i]
+        j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2x = h * (v_x[i] + j1x / 2)
+        j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2y = h * (v_y[i] + j1y / 2)
+        j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2z = h * (v_z[i] + j1z / 2)
+        j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3x = h * (v_x[i] + j2x / 2)
+        j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3y = h * (v_y[i] + j2y / 2)
+        j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3z = h * (v_z[i] + j2z / 2)
+        j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4x = h * (v_x[i] + j3x)
+        j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4y = h * (v_y[i] + j3y)
+        j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4z = h * (v_z[i] + j3z)
+        v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+        v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+        v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+        x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+        y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+        z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+        xlist[i].append(x[i])
+        ylist[i].append(y[i])
+        zlist[i].append(z[i])
+        if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+            v_x[i] = 0
+            v_y[i] = 0
+            v_z[i] = 0
+        if len(xlist[i]) > 10000:
+            xlist[i].remove(xlist[i][0])
+            ylist[i].remove(ylist[i][0])
+            zlist[i].remove(zlist[i][0])
+        ax.plot(xlist[i], ylist[i], linewidth=1)
+        ax.plot(x[i], y[i], marker='o')
+        sys.stdout.write("\r" + str(t))
+        sys.stdout.flush()
+
+
+animation = FuncAnimation(figure, animation_function, frames=100, interval=0)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 3 - 2D Inner planets
+
+import sys
+#2danim
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+M = [1.898e27, 1.988e30, 6.39e23, 4.867e24, 3.285e23, 5.972e24]
+x = [ 7.41e11, 0, 2.067e11, 1.075e11, 4.6e10, 1.471e11]
+y = [ 0, 0, 0, 0, 0, 0]
+z = [ 7.861e10, 0, 2.035e10, 7.237e9, 2.712e9, 1.832e10]
+v_x = [ 0, 0, 0, 0, 0, 0]
+v_y = [ 1.372e4, -10, 2.65e4, 3.526e4, 5.897e4, 3.029e4]
+v_z = [ 0, 0, 0, 0, 0, 0]
+h = 100000
+t = 0
+G = 6.6743e-11
+xlist = [[], [], [], [], [], []]
+ylist = [[], [], [], [], [], []]
+zlist = [[], [], [], [], [], []]
+
+figure = plt.figure()
+ax = figure.add_subplot()
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def animation_function(a):
+    global t
+    ax.clear()
+    ax.axis('equal')
+    t += h
+    for i in range(len(x)):
+        j1x = h * f_x(i, x[i], y[i], z[i])
+        k1x = h * v_x[i]
+        j1y = h * f_y(i, x[i], y[i], z[i])
+        k1y = h * v_y[i]
+        j1z = h * f_z(i, x[i], y[i], z[i])
+        k1z = h * v_z[i]
+        j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2x = h * (v_x[i] + j1x / 2)
+        j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2y = h * (v_y[i] + j1y / 2)
+        j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2z = h * (v_z[i] + j1z / 2)
+        j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3x = h * (v_x[i] + j2x / 2)
+        j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3y = h * (v_y[i] + j2y / 2)
+        j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3z = h * (v_z[i] + j2z / 2)
+        j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4x = h * (v_x[i] + j3x)
+        j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4y = h * (v_y[i] + j3y)
+        j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4z = h * (v_z[i] + j3z)
+        v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+        v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+        v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+        x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+        y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+        z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+        xlist[i].append(x[i])
+        ylist[i].append(y[i])
+        zlist[i].append(z[i])
+        if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+            v_x[i] = 0
+            v_y[i] = 0
+            v_z[i] = 0
+        if len(xlist[i]) > 10000:
+            xlist[i].remove(xlist[i][0])
+            ylist[i].remove(ylist[i][0])
+            zlist[i].remove(zlist[i][0])
+        ax.plot(xlist[i], ylist[i], linewidth=1)
+        ax.plot(x[i], y[i], marker='o')
+        sys.stdout.write("\r" + str(t))
+        sys.stdout.flush()
+
+
+animation = FuncAnimation(figure, animation_function, frames=100, interval=0)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 3 - 2D ALL
+
+import sys
+#2danim
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+M = [5.683e26, 8.66e25, 1.898e27, 1.988e30, 1.027e26, 1.309e22, 6.39e23, 4.867e24, 3.285e23, 5.972e24]
+x = [1.357e12, 2.732e12, 7.41e11, 0, 4.471e12, 4.434e12, 2.067e11, 1.075e11, 4.6e10, 1.471e11]
+y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+z = [1.303e11, 3.083e11, 7.861e10, 0, 5.007e11, 9.128e11, 2.035e10, 7.237e9, 2.712e9, 1.832e10]
+v_x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+v_y = [1.014e4, 7.13e3, 1.372e4, -10, 5.47e3, 6.1e3, 2.65e4, 3.526e4, 5.897e4, 3.029e4]
+v_z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+h = 1000000
+t = 0
+G = 6.6743e-11
+xlist = [[], [], [], [], [], [], [], [], [], []]
+ylist = [[], [], [], [], [], [], [], [], [], []]
+zlist = [[], [], [], [], [], [], [], [], [], []]
+
+figure = plt.figure()
+ax = figure.add_subplot()
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def animation_function(a):
+    global t
+    ax.clear()
+    ax.axis('equal')
+    t += h
+    for i in range(len(x)):
+        j1x = h * f_x(i, x[i], y[i], z[i])
+        k1x = h * v_x[i]
+        j1y = h * f_y(i, x[i], y[i], z[i])
+        k1y = h * v_y[i]
+        j1z = h * f_z(i, x[i], y[i], z[i])
+        k1z = h * v_z[i]
+        j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2x = h * (v_x[i] + j1x / 2)
+        j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2y = h * (v_y[i] + j1y / 2)
+        j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2z = h * (v_z[i] + j1z / 2)
+        j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3x = h * (v_x[i] + j2x / 2)
+        j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3y = h * (v_y[i] + j2y / 2)
+        j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3z = h * (v_z[i] + j2z / 2)
+        j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4x = h * (v_x[i] + j3x)
+        j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4y = h * (v_y[i] + j3y)
+        j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4z = h * (v_z[i] + j3z)
+        v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+        v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+        v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+        x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+        y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+        z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+        xlist[i].append(x[i])
+        ylist[i].append(y[i])
+        zlist[i].append(z[i])
+        if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+            v_x[i] = 0
+            v_y[i] = 0
+            v_z[i] = 0
+        if len(xlist[i]) > 10000:
+            xlist[i].remove(xlist[i][0])
+            ylist[i].remove(ylist[i][0])
+            zlist[i].remove(zlist[i][0])
+        ax.plot(xlist[i], ylist[i], linewidth=1)
+        ax.plot(x[i], y[i], marker='o')
+        sys.stdout.write("\r" + str(t))
+        sys.stdout.flush()
+
+
+animation = FuncAnimation(figure, animation_function, frames=100, interval=0)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 4 - 3D OUTER (with variable sliders)
+
+import sys
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+from matplotlib.widgets import Slider
+
+import sys
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+M = [5.683e26, 8.66e25, 1.988e30, 1.027e26, 1.309e22,] # Masses of the planets
+x = [1.357e12, 2.732e12, 0, 4.471e12, 4.434e12,]        # Initial x positions of the planets
+y = [0, 0, 0, 0, 0]                                                                     # Initial y positions of the planets
+z = [1.303e11, 3.083e11, 0, 5.007e11, 1.928e12,]        # Initial z positions of the planets
+v_x = [0, 0, 0, 0, 0]                                                                   # Initial x velocities of the planets
+v_y = [1.014e4, 7.13e3, -10, 5.47e3, 6.1e3,]                # Initial y velocities of the planets
+v_z = [0, 0, 0, 0, 0]                                                                   # Initial z velocities of the planets
+h = 9999999                                                                                           # Time step
+t = 0                                                                                                  # Initial time
+G = 6.6743e-11                                                                                         
+xlist = [[], [], [], [], []]                                                       # Lists to store x positions for animation
+ylist = [[], [], [], [], []]                                                       # Lists to store y positions for animation
+zlist = [[], [], [], [], []]   
+figure = plt.figure()
+ax = figure.add_subplot(projection='3d')
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+# Create sliders for mass and velocity adjustments
+mass_slider = Slider(plt.axes([0.15, 0.02, 0.65, 0.02]), 'Mass', 1e23, 1e28, valinit=M[0])
+vx_slider = Slider(plt.axes([0.15, 0.06, 0.65, 0.02]), 'Vx', -1e4, 1e4, valinit=v_x[0])
+vy_slider = Slider(plt.axes([0.15, 0.10, 0.65, 0.02]), 'Vy', -1e4, 1e4, valinit=v_y[0])
+vz_slider = Slider(plt.axes([0.15, 0.14, 0.65, 0.02]), 'Vz', -1e4, 1e4, valinit=v_z[0])
+
+def update(val):
+    M[0] = mass_slider.val
+    v_x[0] = vx_slider.val
+    v_y[0] = vy_slider.val
+    v_z[0] = vz_slider.val
+
+mass_slider.on_changed(update)
+vx_slider.on_changed(update)
+vy_slider.on_changed(update)
+vz_slider.on_changed(update)
+
+def animation_function(a):
+    global t
+    ax.clear()
+    ax.axis('equal')
+    t += h
+    for i in range(len(x)):
+        j1x = h * f_x(i, x[i], y[i], z[i])
+        k1x = h * v_x[i]
+        j1y = h * f_y(i, x[i], y[i], z[i])
+        k1y = h * v_y[i]
+        j1z = h * f_z(i, x[i], y[i], z[i])
+        k1z = h * v_z[i]
+        j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2x = h * (v_x[i] + j1x / 2)
+        j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2y = h * (v_y[i] + j1y / 2)
+        j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2z = h * (v_z[i] + j1z / 2)
+        j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3x = h * (v_x[i] + j2x / 2)
+        j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3y = h * (v_y[i] + j2y / 2)
+        j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3z = h * (v_z[i] + j2z / 2)
+        j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4x = h * (v_x[i] + j3x)
+        j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4y = h * (v_y[i] + j3y)
+        j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4z = h * (v_z[i] + j3z)
+        v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+        v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+        v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+        x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+        y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+        z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+        xlist[i].append(x[i])
+        ylist[i].append(y[i])
+        zlist[i].append(z[i])
+        if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+            v_x[i] = 0
+            v_y[i] = 0
+            v_z[i] = 0
+        if len(xlist[i]) > 10000:
+            xlist[i].remove(xlist[i][0])
+            ylist[i].remove(ylist[i][0])
+            zlist[i].remove(zlist[i][0])
+        ax.plot(xlist[i], ylist[i], zlist[i], linewidth=1)
+        ax.plot(x[i], y[i], z[i], marker='o')
+        sys.stdout.write("\r" + str(t))
+        sys.stdout.flush()
+
+
+animation = FuncAnimation(figure, animation_function, frames=100, interval=0)
+ax.set_xlabel("x Position/AU")
+ax.set_ylabel("y Position/AU")
+ax.set_zlabel("z Position/AU")
+ax.set_title("3D Orbital Positions of the Planets in our Solar System")
+plt.axis('scaled')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 4 - 3D INNER 
+
+
+
+import sys
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+from matplotlib.widgets import Slider
+
+import sys
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+M = [1.898e27, 1.988e30, 6.39e23, 4.867e24, 3.285e23, 5.972e24]
+x = [ 7.41e11, 0, 2.067e11, 1.075e11, 4.6e10, 1.471e11]
+y = [ 0, 0, 0, 0, 0, 0]
+z = [ 7.861e10, 0, 2.035e10, 7.237e9, 2.712e9, 1.832e10]
+v_x = [ 0, 0, 0, 0, 0, 0]
+v_y = [ 1.372e4, -10, 2.65e4, 3.526e4, 5.897e4, 3.029e4]
+v_z = [ 0, 0, 0, 0, 0, 0]                                                                   # Initial z velocities of the planets
+h = 50000                                                                                          # Time step
+t = 0                                                                                                  # Initial time
+G = 6.6743e-11                                                                                         
+xlist = [[], [], [], [], [], [], [], [], [], []]                                                       # Lists to store x positions for animation
+ylist = [[], [], [], [], [], [], [], [], [], []]                                                       # Lists to store y positions for animation
+zlist = [[], [], [], [], [], [], [], [], [], []]   
+figure = plt.figure()
+ax = figure.add_subplot(projection='3d')
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+# Create sliders for mass and velocity adjustments
+mass_slider = Slider(plt.axes([0.15, 0.02, 0.65, 0.02]), 'Mass', 1e23, 1e28, valinit=M[0])
+vx_slider = Slider(plt.axes([0.15, 0.06, 0.65, 0.02]), 'Vx', -1e4, 1e4, valinit=v_x[0])
+vy_slider = Slider(plt.axes([0.15, 0.10, 0.65, 0.02]), 'Vy', -1e4, 1e4, valinit=v_y[0])
+vz_slider = Slider(plt.axes([0.15, 0.14, 0.65, 0.02]), 'Vz', -1e4, 1e4, valinit=v_z[0])
+
+def update(val):
+    M[0] = mass_slider.val
+    v_x[0] = vx_slider.val
+    v_y[0] = vy_slider.val
+    v_z[0] = vz_slider.val
+
+mass_slider.on_changed(update)
+vx_slider.on_changed(update)
+vy_slider.on_changed(update)
+vz_slider.on_changed(update)
+
+def animation_function(a):
+    global t
+    ax.clear()
+    ax.axis('equal')
+    t += h
+    for i in range(len(x)):
+        j1x = h * f_x(i, x[i], y[i], z[i])
+        k1x = h * v_x[i]
+        j1y = h * f_y(i, x[i], y[i], z[i])
+        k1y = h * v_y[i]
+        j1z = h * f_z(i, x[i], y[i], z[i])
+        k1z = h * v_z[i]
+        j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2x = h * (v_x[i] + j1x / 2)
+        j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2y = h * (v_y[i] + j1y / 2)
+        j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2z = h * (v_z[i] + j1z / 2)
+        j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3x = h * (v_x[i] + j2x / 2)
+        j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3y = h * (v_y[i] + j2y / 2)
+        j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3z = h * (v_z[i] + j2z / 2)
+        j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4x = h * (v_x[i] + j3x)
+        j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4y = h * (v_y[i] + j3y)
+        j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4z = h * (v_z[i] + j3z)
+        v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+        v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+        v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+        x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+        y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+        z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+        xlist[i].append(x[i])
+        ylist[i].append(y[i])
+        zlist[i].append(z[i])
+        if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+            v_x[i] = 0
+            v_y[i] = 0
+            v_z[i] = 0
+        if len(xlist[i]) > 10000:
+            xlist[i].remove(xlist[i][0])
+            ylist[i].remove(ylist[i][0])
+            zlist[i].remove(zlist[i][0])
+        ax.plot(xlist[i], ylist[i], zlist[i], linewidth=1)
+        ax.plot(x[i], y[i], z[i], marker='o')
+        sys.stdout.write("\r" + str(t))
+        sys.stdout.flush()
+
+
+animation = FuncAnimation(figure, animation_function, frames=100, interval=0)
+ax.set_xlabel("x Position/AU")
+ax.set_ylabel("y Position/AU")
+ax.set_zlabel("z Position/AU")
+ax.set_title("3D Orbital Positions of the Planets in our Solar System")
+plt.axis('scaled')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 5 - Pluto graph
+
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# Pluto parameters
+
+period = 248.348																	  
+ecc = 0.25					  										
+
+
+
+
+# creating an array of every angle in 10 orbits with an increment of 0.001rad between each one
+
+theta_1 = 0																
+theta_2 = 5 * 2 * math.pi		  													
+increm = 0.001						  										
+
+angles = np.arange(theta_1, theta_2 + increm, increm)	  										
+
+
+
+
+
+# setting up Simpson's rule for numerical evaluation of the integral given on the BPhO theory doc
+
+simpson_coefficients = [4, 2]
+reps = (len(angles) - 2) // 2
+first_and_last = 1
+
+
+
+
+
+# check if there are an odd number of elements in the angles array so that the penultimate Simpson coefficient (before the final one, 1) is correct since we are otherwise repeating the [4, 2] array N times
+
+if (len(angles) - 2) % 2 == 1:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [4] + [first_and_last]
+elif (len(angles) - 2) % 2 == 0:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [first_and_last]
+
+
+ex_integral = period * (1-ecc**2)**(3/2) * (increm / 3) / (2*math.pi)
+
+in_integral = np.divide(repeated_simpson, (1 - np.multiply(ecc, np.cos(angles)))**2)
+
+cumsum = np.cumsum(in_integral)
+
+time = np.multiply(ex_integral , cumsum)
+
+
+
+
+# plotting time against orbit angle
+
+lin1 = plt.plot(time, angles, label="ε = 0.25")
+lin2 = plt.plot([0, 5 * period], [0, 5 * 2 * math.pi], label="ε = 0")
+
+
+
+
+
+plt.xlabel("Time/Yr")
+plt.ylabel("Orbital Angle/rad")
+plt.xlim([0, max(time)])
+plt.ylim([0, max(angles)])
+plt.legend(loc='upper left')
+plt.title("Orbital Angle vs Time for Pluto")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 6 - Code for Neptune and Uranus but has been done with mulitple combinations
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+
+
+period_uranus = 84.747				  
+ecc_uranus = 0.05
+
+period_neptune = 166.344
+ecc_neptune = 0.01
+
+
+
+theta_1 = 0													
+theta_2 = 50 * 2 * math.pi		  									
+increm = 0.001						  							
+angles = np.arange(theta_1, theta_2 + increm, increm)	  										
+
+
+simpson_coefficients = [4, 2]
+reps = (len(angles) - 2) // 2
+first_and_last = 1
+
+
+
+if (len(angles) - 2) % 2 == 1:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [4] + [first_and_last]
+elif (len(angles) - 2) % 2 == 0:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [first_and_last]
+
+
+
+
+
+ex_integral_uranus = period_uranus * (1-ecc_uranus**2)**(3/2) * (increm / 3) / (2*math.pi)
+
+in_integral_uranus = np.divide(repeated_simpson, (1 - np.multiply(ecc_uranus, np.cos(angles)))**2)
+
+cumsum_uranus = np.cumsum(in_integral_uranus)
+
+time_uranus = np.multiply(ex_integral_uranus , cumsum_uranus)
+
+
+
+
+ex_integral_neptune = period_neptune * (1-ecc_neptune**2)**(3/2) * (increm / 3) / (2*math.pi)
+
+in_integral_neptune = np.divide(repeated_simpson, (1 - np.multiply(ecc_neptune, np.cos(angles)))**2)
+
+cumsum_neptune = np.cumsum(in_integral_neptune)
+
+time_neptune = np.multiply(ex_integral_neptune , cumsum_neptune)
+
+
+
+
+plt.plot(time_uranus, angles)
+plt.plot(time_neptune, angles)
+plt.show()
+
+
+
+
+angles_6 = np.arange(0, 2 * math.pi + 0.001, 0.001)
+
+major_uranus = 19.293
+ecc_uranus = 0.05
+
+major_neptune = 30.246
+ecc_neptune = 0.01
+
+
+
+
+r_uranus = np.divide(major_uranus*(1 - ecc_uranus**2), 1 - np.multiply(ecc_uranus, np.cos(angles_6)))
+r_neptune = np.divide(major_neptune*(1 - ecc_neptune**2), 1 - np.multiply(ecc_neptune, np.cos(angles_6)))
+
+x_uranus = np.multiply(r_uranus, np.cos(angles_6))
+x_neptune = np.multiply(r_neptune, np.cos(angles_6))
+
+
+y_uranus = np.multiply(r_uranus, np.sin(angles_6))
+y_neptune = np.multiply(r_neptune, np.sin(angles_6))
+
+plt.plot(x_uranus, y_uranus)
+plt.plot(x_neptune, y_neptune)
+
+
+
+orbital_time = 0
+orbits = 15
+dt = 3 * 166.344 / 1234
+
+
+while orbital_time < orbits * 166.344:
+	uranus_angle = np.interp(orbital_time, time_uranus, angles) 
+	neptune_angle = np.interp(orbital_time, time_neptune, angles)
+	new_x_uranus = np.cos(uranus_angle) * major_uranus*(1 - ecc_uranus**2) / (1 - np.multiply(ecc_uranus, np.cos(uranus_angle)))
+	new_x_neptune = np.cos(neptune_angle) * major_neptune*(1 - ecc_neptune**2) / (1 - np.multiply(ecc_neptune, np.cos(neptune_angle)))
+	new_y_uranus = np.sin(uranus_angle) * major_uranus*(1 - ecc_uranus**2) / (1 - np.multiply(ecc_uranus, np.cos(uranus_angle)))
+	new_y_neptune = np.sin(neptune_angle) * major_neptune*(1 - ecc_neptune**2) / (1 - np.multiply(ecc_neptune, np.cos(neptune_angle)))
+	x = [new_x_uranus, new_x_neptune]
+	y = [new_y_uranus, new_y_neptune]
+	plt.axis('scaled')
+	plt.plot(x,y, color='black', linewidth=0.08)
+	orbital_time += dt
+
+
+plt.title("uranus-neptune Spirograph")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 6 - Exoplanet HR8799 Spirographs
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+# replace all of neptune and uranus with e/d/c/b and change the two orbit values written right at the end
+
+period_e = 45
+ecc_e = 0.1445
+
+period_d = 100
+ecc_d = 0.1134
+
+period_c = 190
+ecc_c = 0.0519
+
+period_b = 460
+ecc_b = 0.016
+
+
+
+theta_1 = 0													
+theta_2 = 50 * 2 * math.pi		  									
+increm = 0.001						  							
+angles = np.arange(theta_1, theta_2 + increm, increm)	  										
+
+
+simpson_coefficients = [4, 2]
+reps = (len(angles) - 2) // 2
+first_and_last = 1
+
+
+
+if (len(angles) - 2) % 2 == 1:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [4] + [first_and_last]
+elif (len(angles) - 2) % 2 == 0:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [first_and_last]
+
+
+
+
+
+ex_integral_uranus = period_uranus * (1-ecc_uranus**2)**(3/2) * (increm / 3) / (2*math.pi)
+
+in_integral_uranus = np.divide(repeated_simpson, (1 - np.multiply(ecc_uranus, np.cos(angles)))**2)
+
+cumsum_uranus = np.cumsum(in_integral_uranus)
+
+time_uranus = np.multiply(ex_integral_uranus , cumsum_uranus)
+
+
+
+
+ex_integral_neptune = period_neptune * (1-ecc_neptune**2)**(3/2) * (increm / 3) / (2*math.pi)
+
+in_integral_neptune = np.divide(repeated_simpson, (1 - np.multiply(ecc_neptune, np.cos(angles)))**2)
+
+cumsum_neptune = np.cumsum(in_integral_neptune)
+
+time_neptune = np.multiply(ex_integral_neptune , cumsum_neptune)
+
+
+
+
+plt.plot(time_uranus, angles)
+plt.plot(time_neptune, angles)
+plt.show()
+
+
+
+
+angles_6 = np.arange(0, 2 * math.pi + 0.001, 0.001)
+
+
+
+
+major_e = 16.25
+ecc_e = 0.1445
+
+major_d = 26.67
+ecc_d = 0.1134
+
+major_c = 41.39
+ecc_c = 0.0519
+
+major_b = 71.6
+ecc_b = 0.016
+
+
+
+
+r_uranus = np.divide(major_uranus*(1 - ecc_uranus**2), 1 - np.multiply(ecc_uranus, np.cos(angles_6)))
+r_neptune = np.divide(major_neptune*(1 - ecc_neptune**2), 1 - np.multiply(ecc_neptune, np.cos(angles_6)))
+
+x_uranus = np.multiply(r_uranus, np.cos(angles_6))
+x_neptune = np.multiply(r_neptune, np.cos(angles_6))
+
+
+y_uranus = np.multiply(r_uranus, np.sin(angles_6))
+y_neptune = np.multiply(r_neptune, np.sin(angles_6))
+
+plt.plot(x_uranus, y_uranus)
+plt.plot(x_neptune, y_neptune)
+
+
+
+orbital_time = 0
+orbits = 15
+dt = 3 * 166.344 / 1234
+
+
+while orbital_time < orbits * 166.344:
+	uranus_angle = np.interp(orbital_time, time_uranus, angles) 
+	neptune_angle = np.interp(orbital_time, time_neptune, angles)
+	new_x_uranus = np.cos(uranus_angle) * major_uranus*(1 - ecc_uranus**2) / (1 - np.multiply(ecc_uranus, np.cos(uranus_angle)))
+	new_x_neptune = np.cos(neptune_angle) * major_neptune*(1 - ecc_neptune**2) / (1 - np.multiply(ecc_neptune, np.cos(neptune_angle)))
+	new_y_uranus = np.sin(uranus_angle) * major_uranus*(1 - ecc_uranus**2) / (1 - np.multiply(ecc_uranus, np.cos(uranus_angle)))
+	new_y_neptune = np.sin(neptune_angle) * major_neptune*(1 - ecc_neptune**2) / (1 - np.multiply(ecc_neptune, np.cos(neptune_angle)))
+	x = [new_x_uranus, new_x_neptune]
+	y = [new_y_uranus, new_y_neptune]
+	plt.axis('scaled')
+	plt.plot(x,y, color='black', linewidth=0.08)
+	orbital_time += dt
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Task 7 - (Also done in 3d but results negligible)
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# planet parameters
+
+major_mercury = 0.387
+major_venus = 0.723
+major_earth = 1
+major_mars = 1.523
+
+period_mercury = 0.241	
+period_venus = 0.615
+period_earth = 1
+period_mars = 1.881
+  
+ecc_mercury = 0.21
+ecc_venus = 0.01
+ecc_earth = 0.02
+ecc_mars = 0.09
+
+
+
+
+# Simpson's rule to evaluate orbital angle with time (as before)
+
+theta_1 = 0													
+theta_2 = 200 * 2 * math.pi		  									
+increm = 0.001						  							
+angles = np.arange(theta_1, theta_2 + increm, increm)	  										
+
+
+simpson_coefficients = [4, 2]
+reps = (len(angles) - 2) // 2
+first_and_last = 1
+
+
+if (len(angles) - 2) % 2 == 1:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [4] + [first_and_last]
+elif (len(angles) - 2) % 2 == 0:
+	repeated_simpson = [first_and_last] + simpson_coefficients * reps + [first_and_last]
+
+
+ex_integral_mercury = period_mercury * (1-ecc_mercury**2)**(3/2) * (increm / 3) / (2*math.pi)
+ex_integral_venus = period_venus * (1-ecc_venus**2)**(3/2) * (increm / 3) / (2*math.pi)
+ex_integral_earth = period_earth * (1-ecc_earth**2)**(3/2) * (increm / 3) / (2*math.pi)
+ex_integral_mars = period_mars * (1-ecc_mars**2)**(3/2) * (increm / 3) / (2*math.pi)
+
+
+in_integral_mercury = np.divide(repeated_simpson, (1 - np.multiply(ecc_mercury, np.cos(angles)))**2)
+in_integral_venus = np.divide(repeated_simpson, (1 - np.multiply(ecc_venus, np.cos(angles)))**2)
+in_integral_earth = np.divide(repeated_simpson, (1 - np.multiply(ecc_earth, np.cos(angles)))**2)
+in_integral_mars = np.divide(repeated_simpson, (1 - np.multiply(ecc_mars, np.cos(angles)))**2)
+
+
+cumsum_mercury = np.cumsum(in_integral_mercury)
+cumsum_venus = np.cumsum(in_integral_venus)
+cumsum_earth = np.cumsum(in_integral_earth)
+cumsum_mars = np.cumsum(in_integral_mars)
+
+
+time_mercury = np.multiply(ex_integral_mercury , cumsum_mercury)
+time_venus = np.multiply(ex_integral_venus , cumsum_venus)
+time_earth = np.multiply(ex_integral_earth , cumsum_earth)
+time_mars = np.multiply(ex_integral_mars , cumsum_mars)
+
+
+# calculation of each planet's x and y co-ordinates using the Keplerian equation for r using the semi-major axis and eccentricity
+
+orbital_time = 0
+orbits = 100
+dt = 1/1000
+
+
+while orbital_time < orbits * 0.241:
+	mercury_angle_1 = np.interp(orbital_time, time_mercury, angles) 
+	venus_angle_1 = np.interp(orbital_time, time_venus, angles)
+	earth_angle_1 = np.interp(orbital_time, time_earth, angles)
+	mars_angle_1 = np.interp(orbital_time, time_mars, angles)
+
+
+	new_x_mercury_1 = np.cos(mercury_angle_1) * major_mercury*(1 - ecc_mercury**2) / (1 - np.multiply(ecc_mercury, np.cos(mercury_angle_1)))
+	new_x_venus_1 = np.cos(venus_angle_1) * major_venus*(1 - ecc_venus**2) / (1 - np.multiply(ecc_venus, np.cos(venus_angle_1)))
+	new_x_earth_1 = np.cos(earth_angle_1) * major_earth*(1 - ecc_earth**2) / (1 - np.multiply(ecc_earth, np.cos(earth_angle_1)))
+	new_x_mars_1 = np.cos(mars_angle_1) * major_mars*(1 - ecc_mars**2) / (1 - np.multiply(ecc_mars, np.cos(mars_angle_1)))
+
+
+	new_y_mercury_1 = np.sin(mercury_angle_1) * major_mercury*(1 - ecc_mercury**2) / (1 - np.multiply(ecc_mercury, np.cos(mercury_angle_1)))
+	new_y_venus_1 = np.sin(venus_angle_1) * major_venus*(1 - ecc_venus**2) / (1 - np.multiply(ecc_venus, np.cos(venus_angle_1)))
+	new_y_earth_1 = np.sin(earth_angle_1) * major_earth*(1 - ecc_earth**2) / (1 - np.multiply(ecc_earth, np.cos(earth_angle_1)))
+	new_y_mars_1 = np.sin(mars_angle_1) * major_mars*(1 - ecc_mars**2) / (1 - np.multiply(ecc_mars, np.cos(mars_angle_1)))
+
+
+
+
+# calculation of relative planetary positions by subtraction the co-ordinates of the Earth at that time
+
+	relative_x_mercury_1 = new_x_mercury_1 - new_x_earth_1
+	relative_x_venus_1 = new_x_venus_1 - new_x_earth_1
+	relative_x_sun_1 = new_x_earth_1
+	relative_x_mars_1 = new_x_mars_1 - new_x_earth_1
+
+
+	relative_y_mercury_1 = new_y_mercury_1 - new_y_earth_1
+	relative_y_venus_1 = new_y_venus_1 - new_y_earth_1
+	relative_y_sun_1 = new_y_earth_1
+	relative_y_mars_1 = new_y_mars_1 - new_y_earth_1
+
+
+
+# running the same calculations but with t + dt so that we could join up the first set of co-ordinates generated to a second set generated within the same run of the loop
+	orbital_time += dt
+
+
+	mercury_angle_2 = np.interp(orbital_time, time_mercury, angles) 
+	venus_angle_2 = np.interp(orbital_time, time_venus, angles)
+	earth_angle_2 = np.interp(orbital_time, time_earth, angles)
+	mars_angle_2 = np.interp(orbital_time, time_mars, angles)
+
+
+	new_x_mercury_2 = np.cos(mercury_angle_2) * major_mercury*(1 - ecc_mercury**2) / (1 - np.multiply(ecc_mercury, np.cos(mercury_angle_2)))
+	new_x_venus_2 = np.cos(venus_angle_2) * major_venus*(1 - ecc_venus**2) / (1 - np.multiply(ecc_venus, np.cos(venus_angle_2)))
+	new_x_earth_2 = np.cos(earth_angle_2) * major_earth*(1 - ecc_earth**2) / (1 - np.multiply(ecc_earth, np.cos(earth_angle_2)))
+	new_x_mars_2 = np.cos(mars_angle_2) * major_mars*(1 - ecc_mars**2) / (1 - np.multiply(ecc_mars, np.cos(mars_angle_2)))
+
+
+	new_y_mercury_2 = np.sin(mercury_angle_2) * major_mercury*(1 - ecc_mercury**2) / (1 - np.multiply(ecc_mercury, np.cos(mercury_angle_2)))
+	new_y_venus_2 = np.sin(venus_angle_2) * major_venus*(1 - ecc_venus**2) / (1 - np.multiply(ecc_venus, np.cos(venus_angle_2)))
+	new_y_earth_2 = np.sin(earth_angle_2) * major_earth*(1 - ecc_earth**2) / (1 - np.multiply(ecc_earth, np.cos(earth_angle_2)))
+	new_y_mars_2 = np.sin(mars_angle_2) * major_mars*(1 - ecc_mars**2) / (1 - np.multiply(ecc_mars, np.cos(mars_angle_2)))
+
+
+
+# calculation of relative planetary positions by subtraction the co-ordinates of the Earth at that time
+
+	relative_x_mercury_2 = new_x_mercury_2 - new_x_earth_2
+	relative_x_venus_2 = new_x_venus_2 - new_x_earth_2
+	relative_x_sun_2 = new_x_earth_2
+	relative_x_mars_2 = new_x_mars_2 - new_x_earth_2
+
+
+	relative_y_mercury_2 = new_y_mercury_2 - new_y_earth_2
+	relative_y_venus_2 = new_y_venus_2 - new_y_earth_2
+	relative_y_sun_2 = new_y_earth_2
+	relative_y_mars_2 = new_y_mars_2 - new_y_earth_2
+
+
+	plt.plot([relative_x_mercury_1, relative_x_mercury_2], [relative_y_mercury_1, relative_y_mercury_2] , color='cyan')
+	plt.plot([relative_x_venus_1, relative_x_venus_2], [relative_y_venus_1, relative_y_venus_2] , color='purple')
+	plt.plot([relative_x_sun_1, relative_x_sun_2], [relative_y_sun_1, relative_y_sun_2] , color='yellow')
+	plt.plot([relative_x_mars_1, relative_x_mars_2], [relative_y_mars_1, relative_y_mars_2] , color='red')
+	orbital_time += dt
+
+
+
+
+# plot formatting
+
+plt.plot([relative_x_mercury_1, relative_x_mercury_2], [relative_y_mercury_1, relative_y_mercury_2] , color='cyan', label="Mercury")
+plt.plot([relative_x_venus_1, relative_x_venus_2], [relative_y_venus_1, relative_y_venus_2] , color='purple', label="Venus")
+plt.plot([relative_x_sun_1, relative_x_sun_2], [relative_y_sun_1, relative_y_sun_2] , color='yellow', label="Sun")
+plt.plot([relative_x_mars_1, relative_x_mars_2], [relative_y_mars_1, relative_y_mars_2] , color='red', label="Mars")
+plt.plot([0], [0], marker="o", markersize=4, markeredgecolor="blue", markerfacecolor="blue", label="Earth")
+
+
+plt.axis('scaled')
+plt.xlabel("x Position Relative to Earth/AU")
+plt.ylabel("y Position Relative to Earth/AU")
+plt.legend(loc='upper left')
+plt.title("Orbital Positions of Planets Relative to Earth")
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+TASK 7 - 3D animation
+
+import sys
+import time
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+M = [5.683e26, 8.66e25, 1.898e27, 1.988e30, 1.027e26, 1.309e22, 6.39e23, 4.867e24, 3.285e23, 5.972e24]
+x = [1.357e12, 2.732e12, 7.41e11, 0, 4.471e12, 4.434e12, 2.067e11, 1.075e11, 4.6e10, 1.471e11]
+y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+z = [-1.303e11, -3.083e11, -7.861e10, 0, -5.007e11, 9.128e11, -2.035e10, -7.237e9, -2.712e9, -1.832e10]
+v_x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+v_y = [1.014e4, 7.13e3, 1.372e4, -10, 5.47e3, 6.1e3, 2.65e4, 3.526e4, 5.897e4, 3.029e4]
+v_z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# M = [1.988e30, 6.39e23, 4.867e24, 3.285e23, 5.972e24]
+# x = [0, 2.067e11, 1.075e11, 4.6e10, 1.471e11]
+# y = [0, 0, 0, 0, 0]
+# z = [0, -2.035e10, -7.237e9, -2.712e9, -1.832e10]
+# v_x = [0, 0, 0, 0, 0]
+# v_y = [-10, 2.65e4, 3.526e4, 5.897e4, 3.029e4]
+# v_z = [0, 0, 0, 0, 0]
+h = 200000
+G = 6.6743e-11
+xlist = [[], [], [], [], [], [], [], [], [], []]
+ylist = [[], [], [], [], [], [], [], [], [], []]
+zlist = [[], [], [], [], [], [], [], [], [], []]
+
+figure = plt.figure()
+ax = figure.add_subplot(projection='3d')
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def animation_function(a):
+    if a > 1000:
+        ax.clear()
+        ax.axis('equal')
+        for i in range(len(x)):
+            j1x = h * f_x(i, x[i], y[i], z[i])
+            k1x = h * v_x[i]
+            j1y = h * f_y(i, x[i], y[i], z[i])
+            k1y = h * v_y[i]
+            j1z = h * f_z(i, x[i], y[i], z[i])
+            k1z = h * v_z[i]
+            j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+            k2x = h * (v_x[i] + j1x / 2)
+            j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+            k2y = h * (v_y[i] + j1y / 2)
+            j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+            k2z = h * (v_z[i] + j1z / 2)
+            j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+            k3x = h * (v_x[i] + j2x / 2)
+            j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+            k3y = h * (v_y[i] + j2y / 2)
+            j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+            k3z = h * (v_z[i] + j2z / 2)
+            j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+            k4x = h * (v_x[i] + j3x)
+            j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+            k4y = h * (v_y[i] + j3y)
+            j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+            k4z = h * (v_z[i] + j3z)
+            v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+            v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+            v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+            x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+            y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+            z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+            xlist[i].append(x[i] - x[0])
+            ylist[i].append(y[i] - y[0])
+            zlist[i].append(z[i] - z[0])
+            if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+                v_x[i] = 0
+                v_y[i] = 0
+                v_z[i] = 0
+            if len(xlist[i]) > 10000:
+                xlist[i].remove(xlist[i][0])
+                ylist[i].remove(ylist[i][0])
+                zlist[i].remove(zlist[i][0])
+            ax.plot(xlist[i], ylist[i], zlist[i], linewidth=1)
+            ax.plot(x[i] - x[0], y[i] - y[0], z[i] - z[0], marker='o')
+            sys.stdout.write("\r" + str(a * h))
+            sys.stdout.flush()
+
+
+animation = FuncAnimation(figure, animation_function, frames=1000000000, interval=0)
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Extension Task - Static 2D
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+# same structure as code 2 but with the HR8799 planets' parameters
+
+angles = np.arange(0, 2 * math.pi + 0.001, 0.001)
+
+
+
+
+major_HR8799_e = 16.25
+ecc_HR8799_e = 0.1445
+
+major_HR8799_d = 26.67
+ecc_HR8799_d = 0.1134
+
+major_HR8799_c = 41.39
+ecc_HR8799_c = 0.0519
+
+major_HR8799_b = 71.6
+ecc_HR8799_b = 0.016
+
+
+
+
+
+r_HR8799_e = np.divide(major_HR8799_e*(1 - ecc_HR8799_e**2), 1 - np.multiply(ecc_HR8799_e, np.cos(angles)))
+r_HR8799_d = np.divide(major_HR8799_d*(1 - ecc_HR8799_d**2), 1 - np.multiply(ecc_HR8799_d, np.cos(angles)))
+r_HR8799_c = np.divide(major_HR8799_c*(1 - ecc_HR8799_c**2), 1 - np.multiply(ecc_HR8799_c, np.cos(angles)))
+r_HR8799_b = np.divide(major_HR8799_b*(1 - ecc_HR8799_b**2), 1 - np.multiply(ecc_HR8799_b, np.cos(angles)))
+
+
+
+
+x_HR8799_e = np.multiply(r_HR8799_e, np.cos(angles))
+x_HR8799_d = np.multiply(r_HR8799_d, np.cos(angles))
+x_HR8799_c = np.multiply(r_HR8799_c, np.cos(angles))
+x_HR8799_b = np.multiply(r_HR8799_b, np.cos(angles))
+
+
+
+
+y_HR8799_e = np.multiply(r_HR8799_e, np.sin(angles))
+y_HR8799_d = np.multiply(r_HR8799_d, np.sin(angles))
+y_HR8799_c = np.multiply(r_HR8799_c, np.sin(angles))
+y_HR8799_b = np.multiply(r_HR8799_b, np.sin(angles))
+
+
+
+plt.plot(x_HR8799_e, y_HR8799_e, color='orange', label="HR8799_e")
+plt.plot(x_HR8799_d, y_HR8799_d, color='grey', label="HR8799_d")
+plt.plot(x_HR8799_c, y_HR8799_c, color='red', label="HR8799_c")
+plt.plot(x_HR8799_b, y_HR8799_b, color='blue', label="HR8799_b")
+plt.plot(0, 0, marker="o", markersize=6, markeredgecolor="orange", markerfacecolor="orange")
+
+
+plt.xlabel("x Position/AU")
+plt.ylabel("y Position/AU")
+plt.legend(loc='upper left')
+plt.title("Orbital Positions of Planets in the HR8799 System")
+plt.axis('scaled')
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Extension Task - Static 3d 
+
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Angle range
+angles = np.arange(0, 2 * math.pi + 0.001, 0.001)
+
+# Orbital parameters
+major_HR8799_e = 16.25
+ecc_HR8799_e = 0.1445
+
+major_HR8799_d = 26.67
+ecc_HR8799_d = 0.1134
+
+major_HR8799_c = 41.39
+ecc_HR8799_c = 0.0519
+
+major_HR8799_b = 71.6
+ecc_HR8799_b = 0.016
+
+inclination_HR8799_e = math.radians(25)
+inclination_HR8799_d = math.radians(28)
+inclination_HR8799_c = math.radians(28)
+inclination_HR8799_b = math.radians(28)
+
+# Calculate orbital radii
+r_HR8799_e = np.divide(major_HR8799_e * (1 - ecc_HR8799_e ** 2), 1 - np.multiply(ecc_HR8799_e, np.cos(angles)))
+r_HR8799_d = np.divide(major_HR8799_d * (1 - ecc_HR8799_d ** 2), 1 - np.multiply(ecc_HR8799_d, np.cos(angles)))
+r_HR8799_c = np.divide(major_HR8799_c * (1 - ecc_HR8799_c ** 2), 1 - np.multiply(ecc_HR8799_c, np.cos(angles)))
+r_HR8799_b = np.divide(major_HR8799_b * (1 - ecc_HR8799_b ** 2), 1 - np.multiply(ecc_HR8799_b, np.cos(angles)))
+
+# Calculate 3D positions
+x_HR8799_e = np.multiply(r_HR8799_e, np.cos(angles))
+x_HR8799_d = np.multiply(r_HR8799_d, np.cos(angles))
+x_HR8799_c = np.multiply(r_HR8799_c, np.cos(angles))
+x_HR8799_b = np.multiply(r_HR8799_b, np.cos(angles))
+
+y_HR8799_e = np.multiply(r_HR8799_e, np.sin(angles))
+y_HR8799_d = np.multiply(r_HR8799_d, np.sin(angles))
+y_HR8799_c = np.multiply(r_HR8799_c, np.sin(angles))
+y_HR8799_b = np.multiply(r_HR8799_b, np.sin(angles))
+
+# Apply inclinations
+z_HR8799_e = y_HR8799_e * math.tan(inclination_HR8799_e)
+z_HR8799_d = y_HR8799_d * math.tan(inclination_HR8799_d)
+z_HR8799_c = y_HR8799_c * math.tan(inclination_HR8799_c)
+z_HR8799_b = y_HR8799_b * math.tan(inclination_HR8799_b)
+
+# Plot 3D orbits
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.plot(x_HR8799_e, y_HR8799_e, z_HR8799_e, color='orange', label="HR8799_e")
+ax.plot(x_HR8799_d, y_HR8799_d, z_HR8799_d, color='grey', label="HR8799_d")
+ax.plot(x_HR8799_c, y_HR8799_c, z_HR8799_c, color='red', label="HR8799_c")
+ax.plot(x_HR8799_b, y_HR8799_b, z_HR8799_b, color='blue', label="HR8799_b")
+ax.plot(0, 0, 0, marker="o", markersize=10, markeredgecolor="red", markerfacecolor="orange", label="HR8799")
+
+ax.set_xlabel("X Position/AU")
+ax.set_ylabel("Y Position/AU")
+ax.set_zlabel("Z Position/AU")
+ax.legend(loc='upper left')
+ax.set_title("3D Orbital Positions of Planets in the HR8799 System")
+plt.show()
+
+
+
+
+Extension Task - Animated has the same code for Tasks 3 and 4 (2D and 3D respectively) but with these parameters:
+
+M = [2.924e30, 9.49e27, 1.329e28, 1.329e28, 1.822e28]
+x = [0, 1.017e13, 8.528e12, 5.744e12, 2.821e12]
+y = [0, 0, 0, 0, 0]
+z = [0, 0, 0, 0, 1.284e11]
+v_x = [0, 0, 0, 0, 0]
+v_y = [9.441e1, 4.38e3, 3.383e3, 3.686e3, 7.668e3]
+v_z = [0, 0, 0, 0, 0]
+h = 5000000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
