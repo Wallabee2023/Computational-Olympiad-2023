@@ -887,6 +887,157 @@ plt.show()
 
 
 
+Task 4 - All planets with sliders
+
+import math
+
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+from matplotlib.widgets import Slider
+
+M = [5.683e26, 8.66e25, 1.898e27, 1.988e30, 1.027e26, 1.309e22, 6.39e23, 4.867e24, 3.285e23, 5.972e24]
+x = [1.357e12, 2.732e12, 7.41e11, 0.0, 4.471e12, 4.434e12, 2.067e11, 1.075e11, 4.6e10, 1.471e11]
+y = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+z = [1.303e11, 3.083e11, 7.861e10, 0.0, 5.007e11, -9.128e11, 2.035e10, 7.237e9, 2.712e9, 1.832e10]
+v_x = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+v_y = [1.014e4, 7.13e3, 1.372e4, -10.0, 5.47e3, 6.1e3, 2.65e4, 3.526e4, 5.897e4, 3.029e4]
+v_z = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+h = 500000
+p = 0
+G = 6.6743e-11
+x_list = [[], [], [], [], [], [], [], [], [], []]
+y_list = [[], [], [], [], [], [], [], [], [], []]
+z_list = [[], [], [], [], [], [], [], [], [], []]
+
+figure = plt.figure(figsize=(12, 7))
+ax = figure.add_subplot(projection='3d')
+figure.subplots_adjust()
+
+
+def f_x(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (x[j] - x_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_y(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (y[j] - y_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+def f_z(i, x_i, y_i, z_i):
+    f = 0
+    for j in range(len(x)):
+        if not j == i:
+            f += (z[j] - z_i) * G * M[j] / pow((pow(x[j] - x_i, 2) + pow(y[j] - y_i, 2) + pow(z[j] - z_i, 2)), 1.5)
+    return f
+
+
+mass_slider = Slider(plt.axes([0.05, 0.10, 0.02, 0.80]), 'M', 22, 32, valinit=math.log10(M[p]), orientation='vertical')
+vx_slider = Slider(plt.axes([0.10, 0.10, 0.02, 0.80]), 'Vx', -1e5, 1e5, valinit=v_x[p], orientation='vertical')
+vy_slider = Slider(plt.axes([0.15, 0.10, 0.02, 0.80]), 'Vy', -1e5, 1e5, valinit=v_y[p], orientation='vertical')
+vz_slider = Slider(plt.axes([0.20, 0.10, 0.02, 0.80]), 'Vz', -1e4, 1e4, valinit=v_z[p], orientation='vertical')
+planet = Slider(plt.axes([0.88, 0.10, 0.02, 0.80]), 'planet', 0, 9, valinit=p, orientation='vertical', valstep=1)
+h_slider = Slider(plt.axes([0.95, 0.10, 0.02, 0.80]), 'time step', 0, 2e6, valinit=h, orientation='vertical')
+
+
+def update_m(val):
+    M[p] = pow(10, mass_slider.val)
+
+
+def update_x(val):
+    v_x[p] = vx_slider.val
+
+
+def update_y(val):
+    v_y[p] = vy_slider.val
+
+
+def update_z(val):
+    v_z[p] = vz_slider.val
+
+
+def update_h(val):
+    global h
+    h = h_slider.val
+
+
+def update_p(val):
+    global p
+    p = planet.val
+    mass_slider.set_val(math.log10(M[p]))
+
+
+mass_slider.on_changed(update_m)
+vx_slider.on_changed(update_x)
+vy_slider.on_changed(update_y)
+vz_slider.on_changed(update_z)
+planet.on_changed(update_p)
+h_slider.on_changed(update_h)
+
+
+def animation_function(a):
+    ax.clear()
+    ax.axis('equal')
+    for i in range(len(x)):
+        j1x = h * f_x(i, x[i], y[i], z[i])
+        k1x = h * v_x[i]
+        j1y = h * f_y(i, x[i], y[i], z[i])
+        k1y = h * v_y[i]
+        j1z = h * f_z(i, x[i], y[i], z[i])
+        k1z = h * v_z[i]
+        j2x = h * f_x(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2x = h * (v_x[i] + j1x / 2)
+        j2y = h * f_y(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2y = h * (v_y[i] + j1y / 2)
+        j2z = h * f_z(i, x[i] + k1x / 2, y[i] + k1y / 2, z[i] + k1z / 2)
+        k2z = h * (v_z[i] + j1z / 2)
+        j3x = h * f_x(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3x = h * (v_x[i] + j2x / 2)
+        j3y = h * f_y(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3y = h * (v_y[i] + j2y / 2)
+        j3z = h * f_z(i, x[i] + k2x / 2, y[i] + k2y / 2, z[i] + k2z / 2)
+        k3z = h * (v_z[i] + j2z / 2)
+        j4x = h * f_x(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4x = h * (v_x[i] + j3x)
+        j4y = h * f_y(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4y = h * (v_y[i] + j3y)
+        j4z = h * f_z(i, x[i] + k3x, y[i] + k3y, z[i] + k3z)
+        k4z = h * (v_z[i] + j3z)
+        v_x[i] += 1 / 6 * (j1x + 2 * j2x + 2 * j3x + j4x)
+        v_y[i] += 1 / 6 * (j1y + 2 * j2y + 2 * j3y + j4y)
+        v_z[i] += 1 / 6 * (j1z + 2 * j2z + 2 * j3z + j4z)
+        x[i] += 1 / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
+        y[i] += 1 / 6 * (k1y + 2 * k2y + 2 * k3y + k4y)
+        z[i] += 1 / 6 * (k1z + 2 * k2z + 2 * k3z + k4z)
+        x_list[i].append(x[i])
+        y_list[i].append(y[i])
+        z_list[i].append(z[i])
+        if abs(x[i]) > 8e12 or abs(y[i]) > 8e12 or abs(z[i]) > 8e12:
+            v_x[i] = 0
+            v_y[i] = 0
+            v_z[i] = 0
+        if len(x_list[i]) > 10000:
+            x_list[i].remove(x_list[i][0])
+            y_list[i].remove(y_list[i][0])
+            z_list[i].remove(z_list[i][0])
+        ax.plot(x_list[i], y_list[i], z_list[i], linewidth=1)
+        ax.plot(x[i], y[i], z[i], marker='o')
+    vx_slider.set_val(v_x[p])
+    vy_slider.set_val(v_y[p])
+    vz_slider.set_val(v_z[p])
+
+
+animation = FuncAnimation(figure, animation_function, frames=1000000000, interval=0)
+plt.show()
+
+
+
 
 
 
